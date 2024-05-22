@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    let emojis: [String] = ["🐶","🌸","🐉","☘️","🐠","🦄"]
+    let cards: [String] = ["🐶","🌸","🐉","☘️","🐠","🦄"]
+    @State var cardsCount : Int = 4
     
     var body: some View {
         
@@ -16,11 +17,35 @@ struct ContentView: View {
             LazyVGrid(columns: [GridItem(),GridItem()],
                       alignment: .leading,
                       spacing: 10 ){
-                ForEach(0..<6,id: \.self){index in
-                    CardView(content: emojis[index])}
+                ForEach(0..<cardsCount,id: \.self){index in
+                    CardView(content: cards[index])}
             }.padding()
         }
+        HStack{
+            cardRemover
+            Spacer()
+            cardAdder
+        }.padding()
     }
+    var cardRemover: some View {
+        Button(action: {
+           if cardsCount>1 {
+               cardsCount -= 1
+           }
+        }, label: {
+            Image(systemName: "folder.badge.minus").imageScale(.large).font(.largeTitle)
+        })
+    }
+    var cardAdder: some View {
+        Button(action: {
+            if cardsCount<cards.count {
+               cardsCount += 1
+           }
+        }, label: {
+            Image(systemName: "folder.badge.plus").imageScale(.large).font(.largeTitle)
+        })
+    }
+    
 }
 
 struct CardView: View {
